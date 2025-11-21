@@ -1,0 +1,58 @@
+
+═══════════════════════════════════════════════════════════
+  VCU会议图片OCR提取器
+═══════════════════════════════════════════════════════════
+
+[0;34mℹ️  步骤 1/4: 环境检查[0m
+[0;32m✅ Python3已安装: Python 3.13.5[0m
+[0;34mℹ️  检查Python依赖...[0m
+[0;32m✅ 所有依赖已满足[0m
+[0;32m✅ API密钥已配置[0m
+
+[0;34mℹ️  步骤 2/4: 图片OCR识别[0m
+
+
+❌ 错误: Error code: 401 - {'error': {'message': '该令牌已过期 (request id: 2025111511011711039509792292692)', 'type': 'shell_api_error'}}
+Traceback (most recent call last):
+  File "/Users/fistclark/Desktop/03-enterprise-meeting-formatter/skill-package/markdown-pdf-converter/scripts/ocr-meeting-extractor.py", line 895, in main
+    result = extractor.process_dual_input(
+        image_path=args.image,
+    ...<3 lines>...
+        auto_open=not args.no_open
+    )
+  File "/Users/fistclark/Desktop/03-enterprise-meeting-formatter/skill-package/markdown-pdf-converter/scripts/ocr-meeting-extractor.py", line 622, in process_dual_input
+    attendees = self.extract_attendees_from_image(image_path)
+  File "/Users/fistclark/Desktop/03-enterprise-meeting-formatter/skill-package/markdown-pdf-converter/scripts/ocr-meeting-extractor.py", line 136, in extract_attendees_from_image
+    message = self.client.messages.create(
+        model="claude-sonnet-4-20250514",
+    ...<19 lines>...
+        ],
+    )
+  File "/opt/anaconda3/lib/python3.13/site-packages/anthropic/_utils/_utils.py", line 282, in wrapper
+    return func(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/anthropic/resources/messages/messages.py", line 930, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/v1/messages",
+        ^^^^^^^^^^^^^^^
+    ...<26 lines>...
+        stream_cls=Stream[RawMessageStreamEvent],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/anthropic/_base_client.py", line 1324, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/anthropic/_base_client.py", line 1112, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'error': {'message': '该令牌已过期 (request id: 2025111511011711039509792292692)', 'type': 'shell_api_error'}}
+📝 从文件加载会议内容: test_meeting_content.txt
+   文件大小: 1.6 KB
+
+============================================================
+🚀 双输入模式: 图片(参会人员) + 文本(会议内容)
+============================================================
+
+步骤 1/5: 从图片提取参会人员
+🔍 分析参会人员图片: test_attendees_image.png
+❌ API调用失败: Error code: 401 - {'error': {'message': '该令牌已过期 (request id: 2025111511011711039509792292692)', 'type': 'shell_api_error'}}

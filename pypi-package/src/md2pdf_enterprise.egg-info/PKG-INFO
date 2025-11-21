@@ -1,0 +1,147 @@
+Metadata-Version: 2.4
+Name: md2pdf-enterprise
+Version: 2.0.0
+Summary: 高质量 Markdown 到 PDF 转换工具，支持企业级样式和多主题
+Author-email: Claude Code Skills <skills@claude.ai>
+License: MIT
+Project-URL: Homepage, https://github.com/claude-skills/md2pdf-enterprise
+Project-URL: Documentation, https://github.com/claude-skills/md2pdf-enterprise#readme
+Project-URL: Repository, https://github.com/claude-skills/md2pdf-enterprise
+Project-URL: Issues, https://github.com/claude-skills/md2pdf-enterprise/issues
+Keywords: markdown,pdf,converter,documentation,enterprise
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Documentation
+Classifier: Topic :: Text Processing :: Markup :: Markdown
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyppeteer>=1.0.2
+Requires-Dist: markdown>=3.4.0
+Requires-Dist: pygments>=2.15.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21; extra == "dev"
+Requires-Dist: black>=23.0; extra == "dev"
+Requires-Dist: mypy>=1.0; extra == "dev"
+Requires-Dist: build>=0.10; extra == "dev"
+Requires-Dist: twine>=4.0; extra == "dev"
+Dynamic: license-file
+
+# MD2PDF Enterprise
+
+高质量 Markdown 到 PDF 转换工具，支持企业级样式和多主题。
+
+## ✨ 特性
+
+- 🎨 **多主题支持**: GitHub / Enterprise / Academic
+- 📄 **高质量输出**: 基于 Chromium 渲染，专业排版
+- ⚡ **批量转换**: 支持目录批量处理
+- 🔧 **灵活配置**: 自定义页面格式、边距、缩放
+- 🎯 **企业级样式**: 专业的商务文档风格
+
+## 📦 安装
+
+```bash
+pip install md2pdf-enterprise
+```
+
+## 🚀 快速开始
+
+### 基础使用
+
+```bash
+# 转换单个文件
+md2pdf document.md
+
+# 使用企业主题
+md2pdf document.md -t enterprise
+
+# 指定输出路径
+md2pdf document.md -o output/report.pdf
+
+# 批量转换当前目录所有 .md 文件
+md2pdf --all
+
+# 查看所有可用主题
+md2pdf --list-themes
+```
+
+### Python API
+
+```python
+from md2pdf_enterprise import MarkdownToPDFApp
+import asyncio
+
+app = MarkdownToPDFApp()
+app.initialize()
+
+# 转换单个文件
+result = asyncio.run(app.convert_single(
+    "document.md",
+    theme="enterprise"
+))
+
+if result.success:
+    print(f"✓ {result.output_path}")
+else:
+    print(f"✗ {result.error_message}")
+```
+
+## 🎨 主题
+
+### GitHub 主题
+现代化的技术文档风格，适合开发文档和技术资料。
+
+### Enterprise 主题
+专业的商务文档风格，适合企业报告和会议纪要。
+
+### Academic 主题
+传统的学术论文排版，适合研究报告和学术文档。
+
+## ⚙️ 配置
+
+通过 Python API 可以自定义更多选项：
+
+```python
+app = MarkdownToPDFApp(config_file="custom-config.yml")
+app.update_config(
+    theme="enterprise",
+    format="A4",
+    scale=0.9,
+    margins={
+        'top': '20mm',
+        'bottom': '20mm',
+        'left': '15mm',
+        'right': '15mm'
+    }
+)
+```
+
+## 📚 文档
+
+完整文档请访问: [GitHub Repository](https://github.com/claude-skills/md2pdf-enterprise)
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+## 📄 许可证
+
+MIT License
+
+## 🔗 相关项目
+
+- [Claude Code Skills](https://docs.claude.com/en/docs/claude-code/skills) - 官方 Skills 文档
+- [Markdown PDF Converter Skill](https://github.com/claude-skills/markdown-pdf-converter) - 配套 Skill
+
+---
+
+**Made with ❤️ by Claude Code Skills**

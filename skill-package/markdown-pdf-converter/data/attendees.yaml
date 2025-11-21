@@ -1,0 +1,107 @@
+# VCU项目参会人员数据库
+# 用于快速生成会议纪要
+
+company: "CASCO SIGNAL"
+project: "VCU项目组"
+
+# 会议主持人
+hosts:
+  - id: "傅李育"
+    name: "傅李育"
+    employee_id: "61349"
+    role: "项目经理"
+    module: "项目整体协调"
+
+# 管理人员
+managers:
+  - id: "周庭梁"
+    name: "周庭梁"
+    employee_id: "60136"
+    role: "项目管理"
+
+  - id: "包莉"
+    name: "包莉"
+    employee_id: "60547"
+    role: "项目管理"
+
+  - id: "唐武梅"
+    name: "唐武梅"
+    employee_id: "61945"
+    role: "项目管理"
+
+  - id: "朱程辉"
+    name: "朱程辉"
+    employee_id: "60313"
+    role: "项目管理"
+
+# 技术人员
+engineers:
+  # 硬件工程师
+  - id: "房华玲"
+    name: "房华玲"
+    employee_id: "62802"
+    role: "硬件工程师"
+    module: "VCU-S板卡"
+
+  - id: "王庆勇"
+    name: "王庆勇"
+    employee_id: "60879"
+    role: "硬件工程师"
+    module: "硬件设计"
+
+  - id: "刘辉"
+    name: "刘辉"
+    employee_id: "60911"
+    role: "硬件工程师"
+    module: "硬件测试"
+
+  # 驱动工程师
+  - id: "宋志坚"
+    name: "宋志坚"
+    employee_id: "60372"
+    role: "驱动工程师"
+    module: "FPGA/SDRAM驱动支持"
+
+  # 软件工程师
+  - id: "王艺佳"
+    name: "王艺佳"
+    employee_id: "62763"
+    role: "软件工程师"
+    module: "REWORKS驱动/FCT移植"
+
+  - id: "刘靖泽"
+    name: "刘靖泽"
+    employee_id: "63363"
+    role: "软件工程师"
+    module: "协议栈开发/BUG修复"
+
+  - id: "刘琅"
+    name: "刘琅"
+    employee_id: "62311"
+    role: "软件工程师"
+    module: "内网通信调试/SDB设计"
+
+  - id: "刘浩洋"
+    name: "刘浩洋"
+    employee_id: "63356"
+    role: "软件工程师"
+    module: "CGT/IMT需求/FILESYS"
+
+  - id: "张辉"
+    name: "张辉"
+    employee_id: "60755"
+    role: "安全工程师"
+    module: "安全模块设计"
+
+  # 测试工程师
+  - id: "刘心田"
+    name: "刘心田"
+    employee_id: "62199"
+    role: "项目测试"
+    module: "测试环境统计"
+
+  - id: "林篁"
+    name: "林篁"
+    employee_id: "63161"
+    role: "项目测试"
+    module: "项目测试"

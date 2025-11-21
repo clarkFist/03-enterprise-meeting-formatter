@@ -1,0 +1,3 @@
+[console_scripts]
+md2pdf = md2pdf_enterprise.cli:main
+md2pdf-enterprise = md2pdf_enterprise.cli:main

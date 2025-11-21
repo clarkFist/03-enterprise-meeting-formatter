@@ -1,0 +1,191 @@
+# RB99125046安全运算与控制平台(VCU)项目例会会议纪要
+
+![Company](https://img.shields.io/badge/Company-{{ company_name | default('CASCO SIGNAL') }}-blue?style=flat-square&logo=building&logoColor=white) ![Project](https://img.shields.io/badge/Project-VCU_Team-green?style=flat-square&logo=folder&logoColor=white) ![Meeting](https://img.shields.io/badge/Meeting-{{ meeting_type | default('Regular') }}-orange?style=flat-square&logo=calendar&logoColor=white) ![Priority](https://img.shields.io/badge/Priority-{{ priority | default('High') }}-red?style=flat-square&logo=info&logoColor=white) ![Version](https://img.shields.io/badge/Version-Enhanced-purple?style=flat-square)
+
+---
+
+## 1. 会议基本信息
+
+| 项目 | 内容 |
+| --- | --- |
+| 会议编号 | `{{ meeting_id | default('VCU-MEET-' + meeting_time[:10].replace('-', '')) }}` |
+| 会议主题 | `RB99125046安全运算与控制平台(VCU)项目例会` |
+| 会议时间 | `{{ meeting_time }}` (时长: {{ meeting_duration | default('90分钟') }}) |
+| 会议地点 | `{{ meeting_location | default('企业微信会议') }}` |
+| 会议主持 | `{{ meeting_host }}` |
+| 会议性质 | `{{ meeting_nature | default('定期项目例会') }}` |
+| 记录人员 | `{{ recorder }}` |
+
+## 2. 参会人员
+
+| 姓名 | 工号 | 部门/职责 | 出席情况 | 汇报模块 |
+| --- | --- | --- | --- | --- |
+| **会议主持** |  |  |  |  |
+{% for person in attendees.hosts -%}
+| {{ person.name }} | {{ person.id }} | {{ person.role }} | ✅ 出席(主持人) | {{ person.module }} |
+{% endfor -%}
+| **管理人员** |  |  |  |  |
+{% for person in attendees.managers -%}
+| {{ person.name }} | {{ person.id }} | {{ person.role }} | {% if person.present | default(true) %}✅ 出席{% else %}❌ 缺席{% endif %} | {{ person.module | default('-') }} |
+{% endfor -%}
+| **技术汇报人员** |  |  |  |  |
+{% for person in attendees.engineers -%}
+| {{ person.name }} | {{ person.id }} | {{ person.role }} | {% if person.present | default(true) %}✅ 出席{% else %}❌ 缺席{% endif %} | {{ person.module }} |
+{% endfor %}
+
+## 3. 项目整体状态
+
+**当前阶段：** {{ project_phase | default('开发阶段') }}
+
+{% if project_overview -%}
+**项目进度概况：**
+{% for item in project_overview -%}
+- {{ item }}
+{% endfor %}
+{% endif -%}
+
+{% if key_milestones -%}
+**关键里程碑：**
+{% for milestone in key_milestones -%}
+- {{ milestone }}
+{% endfor %}
+{% endif -%}
+
+{% if critical_risks -%}
+**关键路径风险：**
+{% for risk in critical_risks -%}
+- {{ risk }}
+{% endfor %}
+{% endif %}
+
+## 4. 各模块进展汇报
+
+{% for module in modules -%}
+### {{ module.section }} {{ module.name }}
+
+| 项目 | 内容 |
+| --- | --- |
+| 负责人 | {{ module.owner }} |
+| 进展状态 | {{ module.status }} |
+{% if module.priority -%}
+| 优先级 | {{ module.priority }} |
+{% endif -%}
+
+{% if module.completed -%}
+#### ✅ 已完成工作
+
+{% if module.completed is mapping -%}
+| 工作项 | 完成时间 |
+| --- | --- |
+{% for item, time in module.completed.items() -%}
+| {{ item }} | {{ time }} |
+{% endfor %}
+{% else -%}
+{% for item in module.completed -%}
+- {{ item }}
+{% endfor %}
+{% endif -%}
+{% endif -%}
+
+{% if module.progress -%}
+#### 🔄 当前工作
+
+{% for item in module.progress -%}
+- {{ item }}
+{% endfor %}
+{% endif -%}
+
+{% if module.plans -%}
+#### 🎯 下周计划
+
+{% for plan in module.plans -%}
+- {{ plan }}
+{% endfor %}
+{% endif -%}
+
+{% if module.issues -%}
+#### ⚠️ 存在问题与解决方案
+
+{% if module.issues is mapping -%}
+| 问题描述 | 影响 | 解决方案 | 负责人 | 期限 |
+| --- | --- | --- | --- | --- |
+{% for issue in module.issues -%}
+| {{ issue.description }} | {{ issue.impact }} | {{ issue.solution }} | {{ issue.owner }} | {{ issue.deadline | default('待定') }} |
+{% endfor %}
+{% else -%}
+{% for issue in module.issues -%}
+- {{ issue }}
+{% endfor %}
+{% endif -%}
+{% endif -%}
+
+{% if module.notes -%}
+#### 📝 备注
+
+{% for note in module.notes -%}
+- {{ note }}
+{% endfor %}
+{% endif -%}
+
+{% endfor %}
+
+{# 动态编号，从第5节开始 #}
+{% set ns = namespace(sec=5) %}
+
+{% if leadership_instructions and leadership_instructions|length > 0 -%}
+## {{ ns.sec }}. 领导指示
+
+{% for leader in leadership_instructions -%}
+### {{ leader.section }} {{ leader.name }}指示
+
+{% for category, instructions in leader.instructions.items() -%}
+**{{ category }}：**
+{% for instruction in instructions -%}
+- {{ instruction }}
+{% endfor %}
+
+{% endfor -%}
+{% endfor -%}
+{% set ns.sec = ns.sec + 1 %}
+{% endif %}
+
+{% if tasks and tasks|length > 0 -%}
+## {{ ns.sec }}. 关键任务跟踪
+
+| 任务编号 | 任务内容 | 负责人 | 计划完成时间 | 状态 | 优先级 |
+| --- | --- | --- | --- | --- | --- |
+{% for task in tasks -%}
+| {{ task.id }} | {{ task.content }} | {{ task.owner }} | {{ task.deadline }} | {{ task.status }} | {{ task.priority }} |
+{% endfor %}
+{% set ns.sec = ns.sec + 1 %}
+{% endif %}
+
+{% if decisions and decisions|length > 0 -%}
+## {{ ns.sec }}. 决策事项
+
+| 决策编号 | 决策内容 | 决策状态 | 责任人 | 执行时间 | 影响范围 | 前置条件 |
+| --- | --- | --- | --- | --- | --- | --- |
+{% for decision in decisions -%}
+| {{ decision.id }} | {{ decision.content }} | {{ decision.status }} | {{ decision.owner }} | {{ decision.time }} | {{ decision.scope }} | {{ decision.prerequisite | default('-') }} |
+{% endfor %}
+{% set ns.sec = ns.sec + 1 %}
+{% endif %}
+
+{% if risks and risks|length > 0 -%}
+## {{ ns.sec }}. 风险识别与应对
+
+| 风险编号 | 风险描述 | 风险等级 | 应对措施 | 负责人 |
+| --- | --- | --- | --- | --- |
+{% for risk in risks -%}
+| {{ risk.id }} | {{ risk.description }} | {{ risk.level }} | {{ risk.solution }} | {{ risk.owner }} |
+{% endfor %}
+{% endif %}
+
+---
+
+**会议纪要状态：** ✅ 已确认
+**会议结束时间：** {{ meeting_end_time | default('待定') }}
+{% if approval_info -%}
+**审核人员：** {{ approval_info }}
+{% endif -%}
+**分发范围：** {{ distribution_scope | default('项目组全员 / 相关管理层') }}

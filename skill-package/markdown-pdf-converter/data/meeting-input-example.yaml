@@ -1,0 +1,313 @@
+# VCU项目会议纪要输入示例
+# 填写此文件后运行: python scripts/generate-meeting.py data/meeting-input-example.yaml
+
+# 会议基本信息
+meeting_time: "2025-11-14 14:00-16:00"
+meeting_location: "企业微信会议"
+meeting_host: "傅李育"
+recorder: "刘浩洋（63356）"
+meeting_nature: "定期项目例会"
+meeting_type: "Regular"
+priority: "High"
+company_name: "CASCO SIGNAL"
+
+# 参会人员（从attendees.yaml中选择，或自定义）
+attendees:
+  hosts:
+    - name: "傅李育"
+      id: "61349"
+      role: "项目经理"
+      module: "项目整体协调"
+      present: true
+
+  managers:
+    - name: "周庭梁"
+      id: "60136"
+      role: "项目管理"
+      present: true
+    - name: "包莉"
+      id: "60547"
+      role: "项目管理"
+      present: true
+    - name: "朱程辉"
+      id: "60313"
+      role: "项目管理"
+      present: true
+
+  engineers:
+    - name: "房华玲"
+      id: "62802"
+      role: "硬件工程师"
+      module: "VCU-S板卡"
+      present: true
+    - name: "宋志坚"
+      id: "60372"
+      role: "驱动工程师"
+      module: "FPGA/SDRAM驱动支持"
+      present: true
+    - name: "王艺佳"
+      id: "62763"
+      role: "软件工程师"
+      module: "REWORKS驱动/FCT移植"
+      present: true
+    - name: "刘靖泽"
+      id: "63363"
+      role: "软件工程师"
+      module: "协议栈开发/BUG修复"
+      present: true
+    - name: "刘琅"
+      id: "62311"
+      role: "软件工程师"
+      module: "内网通信调试/SDB设计"
+      present: true
+    - name: "刘浩洋"
+      id: "63356"
+      role: "软件工程师"
+      module: "CGT/IMT需求/FILESYS"
+      present: true
+    - name: "张辉"
+      id: "60755"
+      role: "安全工程师"
+      module: "安全模块设计"
+      present: true
+    - name: "刘心田"
+      id: "62199"
+      role: "项目测试"
+      module: "测试环境统计"
+      present: true
+    - name: "林篁"
+      id: "63161"
+      role: "项目测试"
+      module: "项目测试"
+      present: true
+
+# 各模块进展汇报（参考格式：包含更详细的状态描述）
+modules:
+  - section: "3.1"
+    name: "项目整体情况"
+    owner: "傅李育"
+    status: "✅ 按计划推进"
+    progress:
+      - "3月底满足联锁产品基本功能，VCU200实现联锁OC平台功能"
+      - "4月底CRCC试用证书申请"
+      - "5月底完成大系统上道试用评审，具备远程烧录更新需求"
+      - "VCU200发布主要跟随大系统变更做适配性调整"
+    plans:
+      - "系统需求初稿整理，最晚下周一（11月18日）入云"
+      - "年底实现其他功能需求"
+
+  - section: "3.2"
+    name: "VCU-S硬件测试"
+    owner: "房华玲"
+    status: "✅ 按计划推进"
+    progress:
+      - "VCU-S高低温摸底完成：常温验证基本功能 ✅"
+      - "高低温循环测试完成，目前没有发现问题 ✅"
+      - "后续给上通提供底板，进行基本通用验证（网络、串口等）"
+    issues:
+      - "VCU-S物料号目前还没出，因为之前没有产品型号"
+    plans:
+      - "多板卡生产后验证"
+      - "上通进行基本通用验证"
+
+  - section: "3.3"
+    name: "FPGA驱动开发"
+    owner: "宋志坚"
+    status: "⚠️ 存在风险，进度延后"
+    progress:
+      - "VCU-S的FPGA和SDRAM问题已复现 ✅"
+    issues:
+      - "兆易创新芯片问题未解决，阻塞FPGA开发进度"
+      - "问题已复现并反馈，正在等待兆易创新回复"
+      - "🔴 优先级比较高，需尽快解决"
+    plans:
+      - "等待兆易创新回复"
+
+  - section: "3.4"
+    name: "REWORKS驱动开发"
+    owner: "王艺佳"
+    status: "✅ 按计划推进"
+    progress:
+      - "REWORKS驱动试用版本测试完成"
+      - "串口烧录问题对接：用FCT板复现了代码"
+      - "初步结论：串口更新失败和软件关系不大"
+    issues:
+      - "BSS段内存不足，影响带SCHED功能运行，已反馈华创修改"
+      - "串口收发存在问题，已反馈修改"
+
+  - section: "3.5"
+    name: "北京测试对接与SDB设计"
+    owner: "刘琅"
+    status: "✅ 按计划推进"
+    progress:
+      - "配合北京测试进行软件配合测试用例修改"
+      - "实际情况：我方功能更完善，北京测试环境不够完善"
+      - "SDB设计思考：以前是CAN驱动SDB读写，现考虑通过内部安全通信作为载体"
+    plans:
+      - "继续配合北京测试"
+      - "SDB设计方案确定"
+
+  - section: "3.6"
+    name: "BUG修复"
+    owner: "刘靖泽"
+    status: "✅ 按计划推进"
+    progress:
+      - "配合北京调试BUG（持续进行）"
+    plans:
+      - "和刘琅一起推进开发"
+
+  - section: "3.7"
+    name: "CGT/IMT需求梳理"
+    owner: "刘浩洋"
+    status: "✅ 按计划推进"
+    progress:
+      - "CGT/IMT用户需求梳理完成"
+      - "需求问题讨论完成"
+    issues:
+      - "FILESYS取舍问题待系统设计方定夺"
+    plans:
+      - "约了下周与OC用户开会讨论核对需求"
+
+  - section: "3.8"
+    name: "安全模块"
+    owner: "张辉"
+    status: "✅ 按计划推进"
+    progress:
+      - "安全部内部讨论计划和可裁剪部分"
+      - "裁剪方案确定：PHA和PPHA裁剪掉，保留SHA和IHA"
+      - "在既有VCU项目基础上，根据设计文档变更进行SHA和IHA模块修改"
+
+  - section: "3.9"
+    name: "测试模块"
+    owner: "刘心田"
+    status: "⚠️ 存在风险，进度延后"
+    progress:
+      - "测试环境统计完成"
+      - "软件集成测试不用吃"
+    issues:
+      - "IPD进度风险：原计划11月18号完成，预计可能要到11月底"
+
+# 领导指示
+leadership_instructions:
+  - section: "4.1"
+    title: "周庭梁指示"
+    instructions:
+      - "拉上上通厂的人，通过采购部门让代理约一下原厂，尽快启动与上通、采购、代理的协调工作"
+      - "协调解决兆易创新芯片问题，确保FPGA开发进度，加强与原厂的技术沟通"
+      - "保证开发质量，关注项目整体进度，定期跟踪问题解决进度"
+
+  - section: "4.2"
+    title: "包莉经理意见"
+    instructions:
+      - "硬件生产管理：督促硬件生产下单问题，加快硬件生产下单流程，确保生产进度符合项目计划"
+      - "驱动范围评估：300T扩大驱动范围，尽快评估驱动测试是否需要他们做，明确测试范围和责任分工"
+
+# 关键任务跟踪
+tasks:
+  - id: "T001"
+    content: "系统需求初稿整理入云"
+    owner: "傅李育"
+    deadline: "2025-11-18（下周一）"
+    status: "⏳ 进行中"
+    priority: "🔴 高"
+
+  - id: "T002"
+    content: "等待兆易创新FPGA问题回复并解决"
+    owner: "宋志坚"
+    deadline: "待定"
+    status: "⏳ 等待中"
+    priority: "🔴 高"
+
+  - id: "T003"
+    content: "REWORKS驱动BSS段内存问题修改"
+    owner: "王艺佳/华创"
+    deadline: "待定"
+    status: "⏳ 进行中"
+    priority: "🔴 高"
+
+  - id: "T004"
+    content: "VCU-S物料号申请"
+    owner: "房华玲/包莉"
+    deadline: "待定"
+    status: "⏳ 进行中"
+    priority: "🟡 中"
+
+  - id: "T005"
+    content: "FILESYS取舍决策"
+    owner: "系统设计方/刘浩洋"
+    deadline: "待定"
+    status: "⏳ 待决策"
+    priority: "🟡 中"
+
+  - id: "T006"
+    content: "IPD完成（可能延期到11月底）"
+    owner: "刘心田"
+    deadline: "2025-11-30"
+    status: "⚠️ 风险"
+    priority: "🔴 高"
+
+  - id: "T007"
+    content: "硬件生产下单"
+    owner: "采购/硬件"
+    deadline: "待定"
+    status: "⏳ 进行中"
+    priority: "🟡 中"
+
+  - id: "T008"
+    content: "300T驱动测试评估"
+    owner: "相关团队"
+    deadline: "待定"
+    status: "⏳ 进行中"
+    priority: "🟡 中"
+
+  - id: "T009"
+    content: "SDB设计方案确定"
+    owner: "刘琅/系统设计方"
+    deadline: "下周"
+    status: "⏳ 待确定"
+    priority: "🟡 中"
+
+# 决策事项
+decisions:
+  - "重点跟踪9项关键任务的进展"
+  - "联系上通和原厂协调VCU-S底板验证事宜和FPGA问题解决"
+  - "SDB设计方案从CAN驱动改为内部安全通信载体（待确定）"
+  - "安全模块裁剪方案：去除PHA/PPHA，保留SHA/IHA（已确认）"
+  - "督促硬件生产下单工作"
+  - "系统设计方需要对FILESYS取舍做出决策"
+
+# 风险识别
+risks:
+  - id: "R001"
+    description: "兆易创新芯片问题未解决，阻塞FPGA开发进度"
+    level: "🔴 高"
+    solution: "拉上上通、采购、代理约原厂，持续跟进，准备备选方案"
+    owner: "宋志坚/周庭梁"
+
+  - id: "R002"
+    description: "REWORKS驱动BSS段内存不足"
+    level: "🔴 高"
+    solution: "已反馈华创修改，跟进解决进度"
+    owner: "王艺佳"
+
+  - id: "R003"
+    description: "IPD可能延期到11月底（原计划11月18日）"
+    level: "🔴 高"
+    solution: "调整测试计划，预留风险时间，评估延期影响"
+    owner: "刘心田"
+
+  - id: "R004"
+    description: "VCU-S物料号未出，影响后续采购和生产"
+    level: "🟡 中"
+    solution: "尽快确定产品型号并申请物料号，加快流程"
+    owner: "房华玲/包莉"
+
+  - id: "R005"
+    description: "串口收发存在问题，影响通信功能"
+    level: "🟡 中"
+    solution: "跟进串口收发问题修复，继续排查根因"
+    owner: "王艺佳"
+
+# 会议时间
+meeting_end_time: "16:00"
+next_meeting_time: "2025-11-21 14:00"

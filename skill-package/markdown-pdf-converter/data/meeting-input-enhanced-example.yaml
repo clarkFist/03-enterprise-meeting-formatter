@@ -1,0 +1,313 @@
+# VCU项目会议纪要配置示例（基于2025-11-21格式增强版）
+# 此配置文件展示了所有可用字段和最佳实践
+
+# ============= 基本信息 =============
+meeting_time: "2025-11-21 14:00-15:30"
+meeting_duration: "90分钟"
+meeting_location: "企业微信会议"
+meeting_host: "傅李育"
+meeting_nature: "定期项目例会"
+recorder: "刘浩洋(63356)"
+company_name: "CASCO SIGNAL"
+meeting_type: "Regular"
+priority: "High"
+
+# 可选：手动指定会议编号，否则自动生成为 VCU-MEET-YYYYMMDD
+# meeting_id: "VCU-MEET-20251121"
+
+# ============= 参会人员 =============
+# 支持三种方式：
+# 1. 直接引用data/attendees.yaml中的人员（推荐）
+# 2. 在此处定义人员
+# 3. 混合使用
+
+attendees:
+  hosts:
+    - name: "傅李育"
+      id: "61349"
+      role: "项目经理"
+      module: "项目整体协调"
+      present: true  # 可选，默认为true
+
+  managers:
+    - name: "包莉"
+      id: "60547"
+      role: "项目管理"
+      module: "-"
+    - name: "唐武梅"
+      id: "61945"
+      role: "项目管理"
+    - name: "朱程辉"
+      id: "60313"
+      role: "项目管理/测试"
+
+  engineers:
+    - name: "王庆勇"
+      id: "60879"
+      role: "硬件工程师"
+      module: "硬件设计/CCM"
+    - name: "房华玲"
+      id: "62802"
+      role: "硬件工程师"
+      module: "VCU-S板卡"
+    - name: "宋志坚"
+      id: "60372"
+      role: "驱动工程师"
+      module: "FPGA/SDRAM/光口"
+    - name: "王艺佳"
+      id: "62763"
+      role: "软件工程师"
+      module: "REWORKS驱动/FCT"
+    - name: "刘靖泽"
+      id: "63363"
+      role: "软件工程师"
+      module: "协议栈开发/BUG修复"
+    - name: "刘浩洋"
+      id: "63356"
+      role: "软件工程师"
+      module: "CGT/IMT需求/FILESYS"
+    - name: "张辉"
+      id: "60755"
+      role: "安全工程师"
+      module: "安全保障计划"
+    - name: "刘心田"
+      id: "62199"
+      role: "测试工程师"
+      module: "测试环境统计"
+    - name: "林篁"
+      id: "63161"
+      role: "测试工程师"
+      module: "项目测试"
+
+# ============= 项目整体状态 =============
+project_phase: "3月版VCU开发阶段 - 样机功能转安全功能"
+
+project_overview:
+  - "3月版VCU以样机为基础，将展示类通信/交互功能转为安全功能"
+  - "评审方式改为会议集中评审，流程已申请简化"
+  - "时间表苛刻、团队加班推进，存在存量风险"
+  - "预算被否，需提交明确的环境占用计划后重提"
+
+# 可选：关键里程碑
+# key_milestones:
+#   - "2025年11月（本周）：完成300C发布"
+#   - "2025年11月（下周）：完成安全保证计划评审"
+
+# 关键路径风险
+critical_risks:
+  - "VV测试人力缺口且已滞后"
+  - "安全保证计划滞后"
+  - "光口调试5周且厂商不跟进"
+  - "FPGA和SDRAM问题已复现，兆易不再投入人力追踪和问题定性"
+  - "CCM改版依赖驱动确认并需摸底完成"
+
+# ============= 模块进展汇报 =============
+modules:
+  - section: "4.1"
+    name: "项目整体规划"
+    owner: "傅李育"
+    status: "⚠️ 时间紧/风险高"
+    priority: "🔴 高"
+    completed:
+      "系统需求文档完成初稿": "2025-11-21"
+    progress:
+      - "📝 以样机为基础将展示类通信/交互功能转为安全相关功能"
+      - "节点紧、加班推进，仍有大量风险与遗留"
+      - "预算被否，需明确环境资源的使用人、时间段和用途后重提"
+    issues:
+      - description: "预算被否，环境资源受限"
+        impact: "影响测试和开发资源投入"
+        solution: "补充环境/设备使用明细，重新提交预算申请"
+        owner: "傅李育"
+        deadline: "尽快"
+      - description: "时间表苛刻"
+        impact: "团队压力大，存在交付风险"
+        solution: "加班推进，控制风险"
+        owner: "傅李育"
+        deadline: "持续跟进"
+
+  - section: "4.2"
+    name: "安全模块（既定滞后）"
+    owner: "张辉"
+    status: "⚠️ 滞后"
+    priority: "🔴 高"
+    completed:
+      "安全保证计划初稿": "2025-11-21"
+    progress:
+      - "本周优先完成300C发布"
+      - "安全保证计划需进一步评审"
+    plans:
+      - "完成安全保证计划评审定稿"
+    issues:
+      - description: "进度已脱离时间计划表"
+        impact: "影响整体安全交付"
+        solution: "下周完成评审定稿，预留审签缓冲"
+        owner: "张辉"
+        deadline: "下周"
+
+  - section: "4.3"
+    name: "测试模块（既定滞后）"
+    owner: "朱程辉"
+    status: "⚠️ 已滞后/人力不足"
+    priority: "🔴 高"
+    progress:
+      - "VV计划实际无进度，已脱离时间计划表，属于既定滞后"
+      - "预算只批到2人参与测试，测试无法按计划投入"
+    issues:
+      - description: "人手缺口大"
+        impact: "VV测试无法按计划进行"
+        solution: "考虑外包（预估40W），但存在人员结构风险"
+        owner: "朱程辉"
+        deadline: "待定"
+
+  - section: "4.4"
+    name: "硬件模块"
+    # 可以有子模块，用嵌套来组织
+
+  - section: "4.4.1"
+    name: "CCM硬件中间版"
+    owner: "王庆勇"
+    status: "🔄 调试中"
+    priority: "🔴 高"
+    completed:
+      - "制定中间版硬件计划用于驱动/软件调试与统型"
+    progress:
+      - "待调试项：I350光口、GD32_MCU USB"
+      - "驱动确认后再启动改版"
+      - "改版排期：驱动与软件验证完成后约1个月"
+    plans:
+      - "计划12月底进行电路板调试"
+      - "先出一版CCM供调试"
+    issues:
+      - description: "改版必须等摸底实验完成"
+        impact: "延迟改版时间"
+        solution: "加快I350/USB调试，锁定改版窗口"
+        owner: "王庆勇"
+        deadline: "12月底前"
+
+  - section: "4.5"
+    name: "驱动模块"
+    # 这里可以继续细分
+
+  - section: "4.5.1"
+    name: "光口调试与厂商支持"
+    owner: "宋志坚"
+    status: "⚠️ 高风险"
+    priority: "🔴 高"
+    progress:
+      - "华创希望我方协助调试确认硬件，光口调试预估5周，时间不够需我方投入人力"
+      - "FPGA/SDRAM问题已复现，兆易考虑人力和量不再追踪，不投入人力定性问题"
+      - "现有修改和优化能否缓解问题待验证"
+    issues:
+      - description: "光口调试需5周且厂商不跟进"
+        impact: "冲击项目节点"
+        solution: "时间不够则需我方投入人力解决"
+        owner: "宋志坚"
+      - description: "兆易创新芯片问题未解决"
+        impact: "阻塞FPGA开发进度"
+        solution: "现有修改/优化能否缓解问题待验证"
+        owner: "宋志坚"
+    notes:
+      - "🔴 优先级比较高，需尽快解决"
+
+# ============= 领导指示 =============
+leadership_instructions:
+  - section: "5.1"
+    name: "包莉"
+    instructions:
+      "人力协调":
+        - "针对安全/测试人力缺口既成事实，将向上协调安全、测试及院内领导增补人手"
+      "文档评审":
+        - "文档评审已向上申请，受CBI25项目影响改为线下评审"
+        - "相关流程已申请简化"
+      "硬件生产管理":
+        - "督促硬件生产下单，加快采购/生产协同，确保进度贴合计划"
+        - "先出一版CCM供调试，注意进度与质量风险"
+      "驱动范围评估":
+        - "300T扩大驱动范围，尽快评估驱动测试是否需对方承担"
+        - "明确测试范围与责任分工"
+
+# ============= 关键任务 =============
+tasks:
+  - id: "T001"
+    content: "完成安全保证计划评审并定稿"
+    owner: "张辉"
+    deadline: "下周"
+    status: "⏳ 进行中"
+    priority: "🔴 高"
+
+  - id: "T002"
+    content: "落实VV测试人力配置/外包方案（40W预估）"
+    owner: "朱程辉"
+    deadline: "待定"
+    status: "⚠️ 滞后"
+    priority: "🔴 高"
+
+  - id: "T003"
+    content: "完成I350光口、GD32 USB驱动调试并确认"
+    owner: "王庆勇"
+    deadline: "12月底前"
+    status: "⏳ 进行中"
+    priority: "🔴 高"
+
+  - id: "T004"
+    content: "安排光口调试人力，5周内给出结果并支援华创"
+    owner: "宋志坚"
+    deadline: "5周内"
+    status: "⏳ 进行中"
+    priority: "🔴 高"
+
+  - id: "T005"
+    content: "提供VCU-S REWORKS驱动DEMO并完成对侧验证"
+    owner: "王艺佳"
+    deadline: "待定"
+    status: "⏳ 进行中"
+    priority: "🟡 中"
+
+# ============= 决策事项（可选）=============
+# decisions:
+#   - id: "D001"
+#     content: "3月版VCU以样机为基础，将展示功能转安全功能"
+#     status: "✅ 已确认"
+#     owner: "傅李育"
+#     time: "已执行"
+#     scope: "项目整体方向"
+#     prerequisite: "-"
+
+# ============= 风险识别与应对 =============
+risks:
+  - id: "R001"
+    description: "VV测试计划无进度且人力不足，已形成滞后"
+    level: "🔴 高"
+    solution: "补充人力或外包方案，明确里程碑"
+    owner: "朱程辉"
+
+  - id: "R002"
+    description: "安全保证计划滞后，影响整体安全交付"
+    level: "🔴 高"
+    solution: "下周完成评审定稿，预留审签缓冲"
+    owner: "张辉"
+
+  - id: "R003"
+    description: "光口调试需5周且厂商不跟进，冲击项目节点"
+    level: "🔴 高"
+    solution: "增派人力自研解决，需并行验证替代方案"
+    owner: "宋志坚"
+
+  - id: "R004"
+    description: "FPGA和SDRAM问题已复现，兆易不投入人力追踪和定性"
+    level: "🔴 高"
+    solution: "现有修改/优化能否缓解待验证，必要时寻求替代方案"
+    owner: "宋志坚"
+
+  - id: "R005"
+    description: "CCM改版依赖驱动确认，时间压至12月底"
+    level: "🟠 中"
+    solution: "加快I350/USB调试，锁定改版窗口"
+    owner: "王庆勇"
+
+# ============= 会议结束信息 =============
+meeting_end_time: "2025-11-21 15:30"
+# next_meeting_time: "2025-11-28 14:00"  # 可选
+approval_info: "傅李育 - 审核时间：2025-11-21"
+distribution_scope: "项目组全员 / 相关管理层"

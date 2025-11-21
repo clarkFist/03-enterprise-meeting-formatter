@@ -1,0 +1,214 @@
+# 今日会议纪要输入（由测试生成）
+
+# 会议基本信息
+meeting_time: "2025-11-15 14:00-16:00"
+meeting_location: "企业微信会议"
+meeting_host: "傅李育"
+recorder: "刘浩洋（63356）"
+meeting_nature: "定期项目例会"
+meeting_type: "Regular"
+priority: "High"
+company_name: "CASCO SIGNAL"
+
+# 参会人员（依据提供的图片名单）
+attendees:
+  hosts:
+    - name: "傅李育"
+      id: "61349"
+      role: "项目经理"
+      module: "项目整体协调"
+      present: true
+
+  managers:
+    - name: "周庭梁"
+      id: "60136"
+      role: "项目管理"
+      present: true
+    - name: "包莉"
+      id: "60547"
+      role: "项目管理"
+      present: true
+    - name: "朱程辉"
+      id: "60313"
+      role: "项目管理"
+      present: false
+
+  engineers:
+    - name: "房华玲"
+      id: "62802"
+      role: "硬件工程师"
+      module: "VCU-S硬件测试"
+      present: true
+    - name: "宋志坚"
+      id: "60372"
+      role: "驱动工程师"
+      module: "FPGA/SDRAM驱动"
+      present: true
+    - name: "王艺佳"
+      id: "62763"
+      role: "软件工程师"
+      module: "REWORKS驱动/串口烧录"
+      present: true
+    - name: "刘琅"
+      id: "62311"
+      role: "软件工程师"
+      module: "SDB设计/内部安全通信"
+      present: true
+    - name: "刘靖泽"
+      id: "63363"
+      role: "软件工程师"
+      module: "BUG修复/联调"
+      present: true
+    - name: "刘浩洋"
+      id: "63356"
+      role: "软件工程师"
+      module: "CGT/IMT需求/FILESYS"
+      present: true
+    - name: "张辉"
+      id: "60755"
+      role: "安全工程师"
+      module: "安全裁剪与设计"
+      present: true
+    - name: "林篁"
+      id: "63161"
+      role: "项目测试"
+      module: "测试"
+      present: true
+    - name: "刘心田"
+      id: "62199"
+      role: "项目测试"
+      module: "测试环境/集成测试"
+      present: true
+
+# 各模块进展（依据提供的文字内容结构化）
+modules:
+  - section: "3.1"
+    name: "总体情况"
+    owner: "傅李育"
+    status: "✅ 按计划推进"
+    progress:
+      - "3月底满足联锁产品基本功能；5月底完成大系统上道试用评审"
+      - "VCU200主要跟随大系统变更做适配；3月底实现联锁OC平台功能并满足要求"
+      - "5月底具备远程烧录更新需求；年底实现其他功能需求"
+    plans:
+      - "整理系统需求初稿，最晚下周一入云"
+
+  - section: "3.2"
+    name: "VCU-S硬件测试"
+    owner: "房华玲"
+    status: "✅ 按计划推进"
+    progress:
+      - "VCU-S 高低温摸底（常温/高低温循环）验证，当前未发现问题"
+      - "后续在多板卡情况下，提供底板给上通做基本通用验证（网络/串口等）"
+    issues:
+      - "VCU-S 物料号尚未下发（此前无产品型号）"
+    plans:
+      - "多板卡批量后组织更全面的通用验证"
+
+  - section: "3.3"
+    name: "FPGA/SDRAM 驱动问题"
+    owner: "宋志坚"
+    status: "⚠️ 存在风险，进度延后"
+    progress:
+      - "VCU-S 的 FPGA 与 SDRAM 问题已复现"
+    issues:
+      - "兆易创新侧问题尚未处理，等待原厂回复"
+      - "优先级较高，需要尽快推进与原厂的技术沟通"
+    plans:
+      - "跟踪原厂反馈并制定修复方案"
+
+  - section: "3.4"
+    name: "软件驱动与串口烧录"
+    owner: "王艺佳"
+    status: "⏳ 进行中"
+    progress:
+      - "REWORKS 驱动试用：仅带 SCHED 功能，BSS 段内存不足问题已反馈华创修改"
+      - "测试串口收发存在问题，已反馈修改；串口烧录问题用 FCT 板复现，初判与软件关系不大"
+    plans:
+      - "继续配合上游修复与联调，验证串口烧录链路"
+
+  - section: "3.5"
+    name: "SDB 设计与测试配合"
+    owner: "刘琅"
+    status: "⏳ 进行中"
+    progress:
+      - "配合北京测试进行若干修正；当前更偏向我们功能更完善"
+      - "SDB 设计考虑由内部安全通信作为载体（替代 CAN 驱动直连）"
+    issues:
+      - "北京侧测试环境不够完善，需持续配合"
+    plans:
+      - "完善 SDB 方案与实现细节，结合测试反馈迭代"
+
+  - section: "3.6"
+    name: "BUG 修复与联调"
+    owner: "刘靖泽"
+    status: "⏳ 进行中"
+    progress:
+      - "配合北京团队进行 BUG 调试"
+      - "与刘琅共同推进开发与联调"
+
+  - section: "3.7"
+    name: "需求与文件系统"
+    owner: "刘浩洋"
+    status: "⏳ 进行中"
+    progress:
+      - "CGT/IMT 用户需求梳理与问题讨论"
+    issues:
+      - "FILESYS 的取舍待系统设计方定夺"
+
+  - section: "3.8"
+    name: "安全方案与裁剪"
+    owner: "张辉"
+    status: "⏳ 进行中"
+    progress:
+      - "与安全部讨论可裁剪项"
+      - "基于既有 VCU 项目与设计文档，进行差异裁剪与更新"
+    plans:
+      - "裁剪 PHA/PPHA，保留并完善 SHA/IHA"
+      - "更新安全相关设计文档"
+
+  - section: "3.9"
+    name: "测试进展与风险"
+    owner: "刘心田"
+    status: "⚠️ 存在风险，进度延后"
+    progress:
+      - "统计测试环境；软件集成测试推进中"
+    issues:
+      - "IPD 计划 11 月 18 日可能无法完成，预计到 11 月底"
+
+# 领导指示
+leadership_instructions:
+  - section: "4.1"
+    title: "周庭梁指示"
+    instructions:
+      - "拉上上通，通过采购让代理约原厂，尽快启动三方/四方协调"
+      - "保障开发质量，加强与原厂的技术沟通"
+  - section: "4.2"
+    title: "包莉经理意见"
+    instructions:
+      - "督促硬件生产下单"
+      - "300T 驱动范围扩大事宜：尽快评估驱动测试是否需要对方参与"
+
+# 可选：关键任务（示例）
+tasks:
+  - id: "T001"
+    content: "与上通/采购/代理对接，组织原厂问题沟通（FPGA/SDRAM）"
+    owner: "周庭梁"
+    deadline: "2025-11-18"
+    status: "⏳ 进行中"
+    priority: "🔴 高"
+  - id: "T002"
+    content: "VCU-S 物料号下发并推进硬件批量验证"
+    owner: "房华玲"
+    deadline: "2025-11-22"
+    status: "⏳ 进行中"
+    priority: "🟡 中"
+
+# 可选：风险（示例）
+risks:
+  - id: "R001"
+    description: "IPD 节点可能延期至 11 月底"
+    level: "🟡 中"
+    solution: "复核计划与资源分配，必要时调整关键里程碑"
+    owner: "刘心田"
+
