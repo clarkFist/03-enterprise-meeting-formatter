@@ -1,5 +1,5 @@
 ---
-name: Markdown PDF Converter & Meeting Minutes Generator
+name: markdown-pdf-converter
 description: 企业级文档工具：会议纪要OCR智能生成 + Markdown到PDF高质量转换，支持图片识别参会人员、VCU项目会议纪要模板和多主题PDF输出
 version: 2.5.0
 category: document-tools
