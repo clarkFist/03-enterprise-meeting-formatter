@@ -1,0 +1,81 @@
+# VCU项目会议纪要测试配置
+meeting_time: "2025-11-24 14:00-16:00"
+meeting_location: "企业微信会议"
+meeting_host: "傅李育"
+recorder: "刘浩洋（63356）"
+meeting_nature: "定期项目例会"
+meeting_type: "Regular"
+priority: "High"
+company_name: "CASCO SIGNAL"
+
+# 参会人员
+attendees:
+  hosts:
+    - name: "傅李育"
+      id: "61349"
+      role: "项目经理"
+      module: "项目整体协调"
+      present: true
+
+  managers:
+    - name: "包莉"
+      id: "60547"
+      role: "项目管理"
+      present: true
+
+  engineers:
+    - name: "刘浩洋"
+      id: "63356"
+      role: "软件工程师"
+      module: "CGT/IMT需求/FILESYS"
+      present: true
+
+# 模块进展
+modules:
+  - section: "3.1"
+    name: "项目整体情况"
+    owner: "傅李育"
+    status: "✅ 按计划推进"
+    progress:
+      - "系统需求初稿完成"
+      - "开发环境搭建完成"
+    plans:
+      - "下周进行系统测试"
+    issues:
+      - "需要更多测试资源"
+
+# 领导指示（修复格式）
+leadership_instructions:
+  - section: "4.1"
+    name: "包莉"
+    instructions:
+      人力协调:
+        - "加强团队协调，确保项目进度"
+      技术指导:
+        - "重点关注技术风险控制"
+
+# 任务跟踪
+tasks:
+  - id: "T001"
+    content: "完成系统测试"
+    owner: "刘浩洋"
+    deadline: "下周"
+    status: "⏳ 进行中"
+    priority: "🔴 高"
+
+# 决策事项
+decisions:
+  - "确定使用敏捷开发模式"
+  - "每周进行进度评审"
+
+# 风险识别
+risks:
+  - id: "R001"
+    description: "测试资源不足"
+    level: "🔴 高"
+    solution: "申请更多测试设备"
+    owner: "傅李育"
+
+# 会议结束信息
+meeting_end_time: "16:00"
+next_meeting_time: "2025-12-01 14:00"

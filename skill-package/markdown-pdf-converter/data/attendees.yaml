@@ -62,6 +62,12 @@ engineers:
     role: "驱动工程师"
     module: "FPGA/SDRAM驱动支持"
 
+  - id: "阳国财"
+    name: "阳国财"
+    employee_id: "63551"
+    role: "驱动工程师"
+    module: "驱动支持"
+
   # 软件工程师
   - id: "王艺佳"
     name: "王艺佳"
@@ -92,6 +98,12 @@ engineers:
     employee_id: "60755"
     role: "安全工程师"
     module: "安全模块设计"
+
+  - id: "李梅"
+    name: "李梅"
+    employee_id: "62069"
+    role: "产品RAM工程师"
+    module: "产品需求管理"
 
   # 测试工程师
   - id: "刘心田"

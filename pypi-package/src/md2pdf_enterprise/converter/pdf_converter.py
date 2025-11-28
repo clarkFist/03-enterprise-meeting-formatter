@@ -8,6 +8,7 @@ PDF转换器 - 具体实现
 
 import asyncio
 import os
+import re
 import shutil
 import sys
 import markdown
@@ -15,10 +16,21 @@ from pathlib import Path
 from typing import List, Optional
 from datetime import datetime
 from pyppeteer import launch
+from bs4 import BeautifulSoup
 
 from ..core.converter_base import ConverterBase, ConversionTask, ConversionResult, ConversionStatus
 from ..core.theme_manager import ThemeManager
 from ..core.config_manager import ConfigManager
+from ..core.exceptions import (
+    BrowserNotFoundError,
+    BrowserLaunchError,
+    ThemeNotFoundError,
+    MarkdownParseError,
+    PDFGenerationError,
+    InvalidFileFormatError,
+    ConfigurationError,
+    FileNotFoundError as MD2PDFFileNotFoundError
+)
 
 
 class PDFConverter(ConverterBase):
@@ -83,15 +95,47 @@ class PDFConverter(ConverterBase):
                 duration=duration
             )
     
-    async def convert_batch(self, tasks: List[ConversionTask]) -> List[ConversionResult]:
-        """批量转换文件"""
-        results = []
-        
-        for task in tasks:
-            result = await self.convert_single(task)
-            results.append(result)
-            
-        return results
+    async def convert_batch(self, tasks: List[ConversionTask], max_concurrent: int = 3) -> List[ConversionResult]:
+        """批量转换文件 - 并行执行以提升性能
+
+        Args:
+            tasks: 转换任务列表
+            max_concurrent: 最大并发数，默认3（避免资源过度消耗）
+
+        Returns:
+            转换结果列表
+        """
+        # 使用信号量限制并发数
+        semaphore = asyncio.Semaphore(max_concurrent)
+
+        async def convert_with_semaphore(task: ConversionTask) -> ConversionResult:
+            """带信号量控制的转换"""
+            async with semaphore:
+                return await self.convert_single(task)
+
+        # 并行执行所有转换任务
+        results = await asyncio.gather(
+            *[convert_with_semaphore(task) for task in tasks],
+            return_exceptions=True
+        )
+
+        # 处理异常情况
+        processed_results = []
+        for i, result in enumerate(results):
+            if isinstance(result, Exception):
+                # 如果发生异常，创建失败结果
+                task = tasks[i]
+                task.status = ConversionStatus.FAILED
+                task.error = str(result)
+                processed_results.append(ConversionResult(
+                    task=task,
+                    success=False,
+                    error_message=str(result)
+                ))
+            else:
+                processed_results.append(result)
+
+        return processed_results
     
     def get_supported_themes(self) -> List[str]:
         """获取支持的主题列表"""
@@ -102,21 +146,141 @@ class PDFConverter(ConverterBase):
         """验证转换任务"""
         # 检查源文件
         if not task.source.exists():
-            return False
-        
+            raise MD2PDFFileNotFoundError(str(task.source))
+
         if not task.source.suffix.lower() == '.md':
-            return False
-        
+            raise InvalidFileFormatError(str(task.source), ".md")
+
         # 检查主题
         if task.theme not in self.get_supported_themes():
-            return False
-        
+            raise ThemeNotFoundError(task.theme)
+
         # 检查目标目录
-        if not task.target.parent.exists():
-            task.target.parent.mkdir(parents=True, exist_ok=True)
-        
+        try:
+            if not task.target.parent.exists():
+                task.target.parent.mkdir(parents=True, exist_ok=True)
+        except Exception as e:
+            raise ConfigurationError(f"无法创建输出目录 {task.target.parent}: {str(e)}")
+
         return True
-    
+
+    def _custom_slugify(self, value: str, separator: str = '-') -> str:
+        """自定义slug生成函数，支持中文和数字混合的锚点ID
+
+        将标题转换为URL友好的锚点ID，保留中文字符和数字。
+        例如: "4.1 商务管理" -> "41-商务管理"
+
+        Args:
+            value: 原始标题文本
+            separator: 分隔符，默认为'-'
+
+        Returns:
+            转换后的slug字符串
+        """
+        # 移除前后空白
+        value = value.strip()
+
+        # 处理数字+点号格式（如"4.1"）
+        # 将"4.1 商务管理"转换为"41-商务管理"
+        value = re.sub(r'(\d+)\.(\d+)\s+', r'\1\2' + separator, value)
+
+        # 如果没有匹配到上述模式，处理其他格式
+        # 移除非中文、非数字、非字母的字符（保留连字符）
+        value = re.sub(r'[^\w\u4e00-\u9fff\-]+', separator, value)
+
+        # 移除多余的分隔符
+        value = re.sub(r'-+', separator, value)
+
+        # 移除首尾的分隔符
+        value = value.strip(separator)
+
+        return value.lower() if value.isascii() else value
+
+    def _fix_anchor_links(self, html_content: str) -> str:
+        """修复HTML中的锚点链接，确保链接目标ID存在
+
+        扫描所有<a href="#...">链接，确保对应的id存在。
+        如果不存在，尝试从标题文本生成匹配的ID。
+
+        Args:
+            html_content: 原始HTML内容
+
+        Returns:
+            修复后的HTML内容
+        """
+        soup = BeautifulSoup(html_content, 'html.parser')
+
+        # 收集所有已存在的ID
+        existing_ids = {elem.get('id') for elem in soup.find_all(id=True)}
+
+        # 收集所有锚点链接
+        anchor_links = {}
+        for link in soup.find_all('a', href=True):
+            href = link.get('href', '')
+            if href.startswith('#'):
+                anchor_id = href[1:]  # 移除#
+                anchor_links[anchor_id] = link
+
+        # 修复不存在的锚点ID
+        for anchor_id, link in anchor_links.items():
+            if anchor_id not in existing_ids:
+                # 尝试查找匹配的标题
+                target_heading = self._find_matching_heading(soup, anchor_id)
+                if target_heading:
+                    # 为标题添加ID
+                    target_heading['id'] = anchor_id
+                    existing_ids.add(anchor_id)
+
+        return str(soup)
+
+    def _find_matching_heading(self, soup: BeautifulSoup, anchor_id: str) -> Optional[any]:
+        """查找与锚点ID匹配的标题元素
+
+        尝试根据锚点ID查找对应的标题。
+        例如: "41-商务管理" 应该匹配 <h3>4.1 商务管理</h3>
+
+        Args:
+            soup: BeautifulSoup对象
+            anchor_id: 锚点ID（不含#）
+
+        Returns:
+            匹配的标题元素，如果找不到返回None
+        """
+        # 尝试直接ID匹配
+        heading = soup.find(id=anchor_id)
+        if heading:
+            return heading
+
+        # 尝试从锚点ID反推原始文本
+        # "41-商务管理" -> "4.1 商务管理" 或 "4.1商务管理"
+        pattern = re.match(r'^(\d)(\d+)-(.+)$', anchor_id)
+        if pattern:
+            major, minor, text = pattern.groups()
+            # 尝试多种可能的格式
+            possible_texts = [
+                f"{major}.{minor} {text}",
+                f"{major}.{minor}{text}",
+                f"{major}.{minor}  {text}",  # 可能有多个空格
+            ]
+
+            for heading_tag in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
+                for heading in soup.find_all(heading_tag):
+                    heading_text = heading.get_text().strip()
+                    for possible_text in possible_texts:
+                        if heading_text == possible_text or heading_text.startswith(possible_text):
+                            return heading
+
+        # 尝试模糊匹配：移除分隔符后比较
+        clean_anchor = anchor_id.replace('-', '').replace('_', '')
+        for heading_tag in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
+            for heading in soup.find_all(heading_tag):
+                heading_text = heading.get_text().strip()
+                clean_heading = heading_text.replace('.', '').replace(' ', '').replace('-', '').replace('_', '')
+                if clean_anchor in clean_heading or clean_heading in clean_anchor:
+                    return heading
+
+        return None
+
     def _convert_markdown_to_html(self, markdown_content: str) -> str:
         """将Markdown转换为HTML"""
         md = markdown.Markdown(
@@ -144,86 +308,85 @@ class PDFConverter(ConverterBase):
                 'toc': {
                     'permalink': True,
                     'permalink_class': 'headerlink',
-                    'permalink_title': 'Permanent link'
+                    'permalink_title': 'Permanent link',
+                    'slugify': self._custom_slugify
                 }
             }
         )
-        
+
         html_content = md.convert(markdown_content)
-        
+
         # 为企业文档添加语义化类名
         html_content = self._add_semantic_classes(html_content)
-        
+
+        # 修复锚点链接
+        html_content = self._fix_anchor_links(html_content)
+
         return html_content
     
     def _add_semantic_classes(self, html_content: str) -> str:
-        """为HTML内容添加语义化类名以优化分页"""
-        import re
-        
-        # 识别会议相关章节
-        meeting_patterns = [
-            (r'<h2>([^<]*(?:会议|议程|讨论|决定|行动|任务|问题)[^<]*)</h2>', 
-             r'<h2 class="meeting-section">\1</h2>'),
-            (r'<h3>([^<]*(?:行动项目|任务分配|决策要点)[^<]*)</h3>', 
-             r'<h3 class="action-items">\1</h3>'),
-            (r'<h3>([^<]*(?:决定|决策|结论)[^<]*)</h3>', 
-             r'<h3 class="decision-points">\1</h3>'),
-        ]
-        
-        # 应用语义化类名
-        for pattern, replacement in meeting_patterns:
-            html_content = re.sub(pattern, replacement, html_content, flags=re.IGNORECASE)
-        
+        """为HTML内容添加语义化类名以优化分页 - 使用BeautifulSoup替代正则表达式"""
+        soup = BeautifulSoup(html_content, 'html.parser')
+
+        # 识别并标记会议相关章节
+        self._mark_meeting_sections(soup)
+
+        # 添加特定页面布局控制类
+        self._add_page_layout_classes(soup)
+
+        # 为内容块添加包装
+        self._wrap_content_blocks(soup)
+
+        return str(soup)
+
+    def _mark_meeting_sections(self, soup: BeautifulSoup) -> None:
+        """标记会议相关章节"""
+        meeting_keywords = ['会议', '议程', '讨论', '决定', '行动', '任务', '问题']
+        action_keywords = ['行动项目', '任务分配', '决策要点']
+        decision_keywords = ['决定', '决策', '结论']
+
+        # 标记h2会议章节
+        for h2 in soup.find_all('h2'):
+            if h2.get_text() and any(keyword in h2.get_text() for keyword in meeting_keywords):
+                h2['class'] = h2.get('class', []) + ['meeting-section']
+
+        # 标记h3行动项目
+        for h3 in soup.find_all('h3'):
+            text = h3.get_text() if h3.get_text() else ""
+            if any(keyword in text for keyword in action_keywords):
+                h3['class'] = h3.get('class', []) + ['action-items']
+            elif any(keyword in text for keyword in decision_keywords):
+                h3['class'] = h3.get('class', []) + ['decision-points']
+
+    def _add_page_layout_classes(self, soup: BeautifulSoup) -> None:
+        """添加页面布局控制类"""
+        h2_tags = soup.find_all('h2')
+
         # 为特定章节添加分页控制类
-        # 直接替换h2标签的id属性，添加class属性以适配包含永久链接的HTML结构
-        html_content = re.sub(
-            r'<h2 id="1">',
-            r'<h2 id="1" class="first-page-section">',
-            html_content
-        )
-        
-        html_content = re.sub(
-            r'<h2 id="2">',
-            r'<h2 id="2" class="second-page-section">',
-            html_content
-        )
-        
-        html_content = re.sub(
-            r'<h2 id="3">',
-            r'<h2 id="3" class="module-reports-section">',
-            html_content
-        )
-        
-        # 移除强制页面填充 - 让内容自然流动
-        # 注释掉：避免不必要的页面留白，依赖CSS智能分页
-        
-        # 移除强制分页符插入 - 依赖CSS自动分页控制
-        # 注释掉：避免双重分页控制导致的过度留白
-        
-        # 为列表组添加内容块类
-        html_content = re.sub(
-            r'(<ul>.*?</ul>)', 
-            r'<div class="content-block">\1</div>', 
-            html_content, 
-            flags=re.DOTALL
-        )
-        
-        html_content = re.sub(
-            r'(<ol>.*?</ol>)', 
-            r'<div class="content-block">\1</div>', 
-            html_content, 
-            flags=re.DOTALL
-        )
-        
-        # 为表格添加内容块类
-        html_content = re.sub(
-            r'(<table>.*?</table>)', 
-            r'<div class="content-block">\1</div>', 
-            html_content, 
-            flags=re.DOTALL
-        )
-        
-        return html_content
+        for i, h2 in enumerate(h2_tags, 1):
+            current_classes = h2.get('class', [])
+
+            if h2.get('id') == '1' or i == 1:
+                h2['class'] = current_classes + ['first-page-section']
+            elif h2.get('id') == '2' or i == 2:
+                h2['class'] = current_classes + ['second-page-section']
+            elif h2.get('id') == '3' or i == 3:
+                h2['class'] = current_classes + ['module-reports-section']
+
+    def _wrap_content_blocks(self, soup: BeautifulSoup) -> None:
+        """为内容块添加包装div以便更好的分页控制"""
+        # 包装列表
+        for tag_name in ['ul', 'ol']:
+            for tag in soup.find_all(tag_name):
+                if not tag.parent or tag.parent.name != 'div' or 'content-block' not in tag.parent.get('class', []):
+                    wrapper = soup.new_tag('div', **{'class': 'content-block'})
+                    tag.wrap(wrapper)
+
+        # 包装表格
+        for table in soup.find_all('table'):
+            if not table.parent or table.parent.name != 'div' or 'content-block' not in table.parent.get('class', []):
+                wrapper = soup.new_tag('div', **{'class': 'content-block'})
+                table.wrap(wrapper)
     
     def _create_html_document(self, html_content: str, title: str, theme_css: str) -> str:
         """创建完整的HTML文档"""

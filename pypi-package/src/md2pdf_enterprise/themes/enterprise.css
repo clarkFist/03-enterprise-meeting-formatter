@@ -1,0 +1,590 @@
+/* 企业主题 - 专业商务文档样式 */
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Source+Code+Pro:wght@400;600&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 48px;
+    background: #ffffff;
+}
+
+/* 页眉样式 */
+h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a365d;
+    margin-bottom: 8px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid #2563eb;
+    text-align: center;
+}
+
+/* 二级标题 - 统一蓝色渐变底色（避免出现偏粉的视觉效果） */
+h2,
+h2.meeting-section,
+h2.first-page-section,
+h2.module-reports-section {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e40af;
+    margin: 40px 0 20px 0;
+    padding: 12px 0 12px 20px;
+    border-left: 5px solid #3b82f6;
+    /* 强化为纯蓝色系的渐变，并加 !important 防止外部样式覆盖 */
+    background: linear-gradient(90deg, #dbeafe 0%, rgba(219,234,254,0.0) 100%) !important;
+    background-color: #dbeafe !important;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+    margin: 32px 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #4b5563;
+    margin: 24px 0 12px 0;
+}
+
+/* 段落和文本 */
+p {
+    margin: 16px 0;
+    text-align: justify;
+    color: #374151;
+}
+
+/* 列表样式 */
+ul, ol {
+    margin: 16px 0;
+    padding-left: 24px;
+}
+
+li {
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+ul li {
+    list-style-type: none;
+    position: relative;
+}
+
+ul li:before {
+    content: "▸";
+    color: #3b82f6;
+    font-weight: bold;
+    position: absolute;
+    left: -20px;
+}
+
+/* 有序列表样式 - 使用默认编号确保一致性 */
+ol {
+    padding-left: 24px;
+    margin: 16px 0;
+}
+
+ol li {
+    margin: 8px 0;
+    padding-left: 8px;
+    text-align: left;
+    line-height: 1.6;
+}
+
+/* 保持编号样式一致 */
+ol li::marker {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+/* 嵌套列表样式 */
+ol ol {
+    margin: 4px 0;
+    padding-left: 20px;
+}
+
+/* 表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 13px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    table-layout: fixed;
+}
+
+th {
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    border: none;
+    height: 44px;
+}
+
+td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+    height: 52px;
+    line-height: 1.4;
+}
+
+tbody tr {
+    height: 52px;
+    min-height: 52px;
+    max-height: 52px;
+}
+
+tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+tr:hover {
+    background: #eff6ff;
+}
+
+/* 强制表格行高一致性 */
+tr td {
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 代码样式 */
+code {
+    font-family: 'Source Code Pro', Menlo, Monaco, monospace;
+    background: #f1f5f9;
+    color: #1e293b;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    border: 1px solid #e2e8f0;
+}
+
+pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+    border-left: 4px solid #3b82f6;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+}
+
+/* 引用样式 */
+blockquote {
+    border-left: 4px solid #fbbf24;
+    background: #fffbeb;
+    margin: 20px 0;
+    padding: 16px 20px;
+    border-radius: 0 6px 6px 0;
+    color: #92400e;
+    font-style: italic;
+}
+
+/* 强调样式 */
+strong {
+    color: #1f2937;
+    font-weight: 600;
+}
+
+em {
+    color: #4b5563;
+}
+
+/* 徽章和图片样式 */
+img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    margin: 2px;
+    vertical-align: middle;
+}
+
+/* 徽章容器样式 - 第一段包含徽章 */
+p:first-of-type img {
+    margin: 0 4px 0 0;
+}
+
+/* 徽章行样式 */
+p:first-of-type {
+    text-align: center;
+    margin: 16px 0 24px 0;
+    line-height: 1.2;
+}
+
+/* 链接样式 */
+a {
+    color: #2563eb;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+a:hover {
+    color: #1d4ed8;
+    border-bottom-color: #1d4ed8;
+}
+
+/* 分隔线 */
+hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, #e5e7eb 0%, #9ca3af 50%, #e5e7eb 100%);
+    margin: 32px 0;
+}
+
+/* 页面布局和页眉页脚 */
+@page {
+    size: A4;
+    margin: 2.5cm 2cm 3cm 2cm;
+
+    @top-center {
+        content: "Enterprise Document";
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 10px;
+        color: #6b7280;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 5px;
+    }
+
+    @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 10px;
+        color: #6b7280;
+    }
+
+    @bottom-left {
+        content: "Confidential - Enterprise Use Only";
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 9px;
+        color: #9ca3af;
+    }
+}
+
+/* 文档水印 */
+body::before {
+    content: "";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 120px;
+    color: rgba(59, 130, 246, 0.03);
+    z-index: -1;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+/* 首页特殊样式 */
+h1:first-of-type {
+    margin-top: 60px;
+    position: relative;
+}
+
+h1:first-of-type::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #1e40af 0%, #3b82f6 50%, #1e40af 100%);
+    border-radius: 3px;
+}
+
+/* 智能分页策略 */
+
+/* 避免孤立行和寡行 */
+p, li, div {
+    orphans: 4;
+    widows: 4;
+}
+
+/* 章节分页 - 更智能的策略 */
+h1 {
+    page-break-before: auto;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+}
+
+h1:first-of-type {
+    page-break-before: auto;
+}
+
+/* 特定页面布局控制 */
+.first-page-section {
+    page-break-before: avoid !important;
+    page-break-after: auto;
+}
+
+.second-page-section {
+    page-break-before: page !important;
+}
+
+.second-page-section + table {
+    page-break-after: page !important;
+    margin-bottom: 40px;
+}
+
+/* 智能第三章节分页 - 减少强制分页避免留白 */
+h2[id="3"],
+.module-reports-section,
+h2:nth-of-type(3) {
+    page-break-before: auto;
+    page-break-after: avoid;
+    margin-top: 32px !important;
+    padding-top: 16px !important;
+}
+
+/* 参会人员章节后的智能分页 */
+h2[id="2"] + table + h2,
+h2[id="2"] + * + h2 {
+    page-break-before: auto;
+    margin-top: 40px;
+}
+
+/* 如果页面剩余空间不足，才进行分页 */
+@media print {
+    h2[id="2"] + table + h2[id="3"] {
+        page-break-before: avoid-if-possible;
+        min-height: 200px;
+    }
+}
+
+/* 保持内容块完整性 */
+.content-block {
+    page-break-inside: avoid !important;
+}
+
+/* 强制表格完整性 - 多重保护 */
+table {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    -webkit-break-inside: avoid !important;
+}
+
+tbody {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    -webkit-break-inside: avoid !important;
+}
+
+/* 表格前后的内容保护 */
+h2 + table, h3 + table, h4 + table,
+p + table, ul + table, ol + table {
+    page-break-before: auto;
+    margin-top: 20px;
+}
+
+/* 列表完整性 */
+ul, ol {
+    page-break-inside: avoid-if-possible;
+}
+
+li {
+    page-break-inside: avoid;
+}
+
+/* 段落分组 */
+h2 + p, h3 + p, h4 + p {
+    page-break-before: avoid;
+}
+
+/* 相关内容保持在一起 */
+h2, h3, h4 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+}
+
+/* 确保标题和后续内容的最小间距 */
+h2 + *, h3 + *, h4 + * {
+    page-break-before: avoid;
+}
+
+/* 高级印刷优化 */
+@media print {
+    body {
+        font-size: 12px;
+        line-height: 1.5;
+        padding: 20px;
+        color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    /* 强化标题分页规则 */
+    h1 {
+        font-size: 24px;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+        margin-bottom: 1.5em;
+    }
+
+    h2, h3, h4 {
+        page-break-after: avoid;
+        page-break-inside: avoid;
+        page-break-before: avoid-if-possible;
+    }
+
+    /* 优化特定章节的分页规则 */
+    h2[id="3"],
+    .module-reports-section,
+    h2:nth-of-type(3) {
+        page-break-before: auto;
+        page-break-after: avoid;
+        margin-top: 24px !important;
+    }
+
+    /* 强制分页辅助div */
+    div[style*="page-break-before: page"] {
+        page-break-before: page !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    /* 确保标题后至少有3行内容 */
+    h1:has(+ *), h2:has(+ *), h3:has(+ *) {
+        min-height: 3em;
+    }
+
+    /* 表格智能分页 - 强化保护 */
+    table {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        -webkit-break-inside: avoid !important;
+        page-break-after: auto;
+        page-break-before: auto;
+        border-collapse: collapse;
+        table-layout: fixed;
+        margin: 20px 0;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tbody {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        -webkit-break-inside: avoid !important;
+    }
+
+    tbody tr {
+        page-break-inside: avoid !important;
+        page-break-after: auto;
+        height: 52px !important;
+        min-height: 52px !important;
+        max-height: 52px !important;
+    }
+
+    tr td {
+        height: 52px !important;
+        line-height: 1.4;
+        padding: 12px 16px;
+        vertical-align: top;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    th {
+        height: 44px !important;
+        padding: 12px 16px;
+    }
+
+    /* 防止表格拉伸 */
+    table {
+        border-spacing: 0;
+    }
+
+    /* 代码块智能分页 */
+    pre {
+        page-break-inside: avoid-if-possible;
+        page-break-after: auto;
+        page-break-before: avoid-if-possible;
+        max-height: 70vh;
+        overflow: hidden;
+    }
+
+    code {
+        page-break-inside: avoid;
+    }
+
+    /* 引用块完整性 */
+    blockquote {
+        page-break-inside: avoid-if-possible;
+        page-break-after: auto;
+    }
+
+    /* 列表智能分页 */
+    ul, ol {
+        page-break-inside: avoid-if-possible;
+        page-break-after: auto;
+    }
+
+    /* 避免内容碎片化 */
+    p {
+        page-break-inside: avoid-if-possible;
+        orphans: 4;
+        widows: 4;
+    }
+
+    /* 特殊内容组保持完整 */
+    .meeting-section,
+    .action-items,
+    .decision-points {
+        page-break-inside: avoid-if-possible;
+        page-break-after: auto;
+    }
+
+    /* 避免在章节间留空白 */
+    * + h1 {
+        page-break-before: auto;
+    }
+
+    /* 徽章和图片样式 */
+    img {
+        page-break-inside: avoid;
+        page-break-after: auto;
+        page-break-before: avoid-if-possible;
+        max-width: 100%;
+        height: auto;
+        display: inline-block;
+        margin: 2px;
+    }
+
+    /* 内容连续性优化 */
+    h2 + p, h3 + p, h4 + p,
+    h2 + ul, h3 + ul, h4 + ul,
+    h2 + ol, h3 + ol, h4 + ol,
+    h2 + table, h3 + table, h4 + table {
+        page-break-before: avoid;
+    }
+}

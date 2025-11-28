@@ -1,0 +1,209 @@
+/* GitHub主题 - 现代技术文档样式 */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1f2328;
+    max-width: 1012px;
+    margin: 0 auto;
+    padding: 32px;
+    background: #ffffff;
+}
+
+/* 标题样式 */
+h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #1f2328;
+    margin-bottom: 16px;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #d8dee4;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f2328;
+    margin: 24px 0 16px 0;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #d8dee4;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2328;
+    margin: 24px 0 16px 0;
+}
+
+h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2328;
+    margin: 24px 0 16px 0;
+}
+
+/* 段落和文本 */
+p {
+    margin: 16px 0;
+    color: #656d76;
+}
+
+/* 列表样式 */
+ul, ol {
+    margin: 16px 0;
+    padding-left: 32px;
+}
+
+li {
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+/* 表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+    background: #ffffff;
+}
+
+th {
+    background: #f6f8fa;
+    color: #1f2328;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid #d8dee4;
+}
+
+td {
+    padding: 12px 16px;
+    border: 1px solid #d8dee4;
+    vertical-align: top;
+}
+
+tbody tr:nth-child(even) {
+    background: #f6f8fa;
+}
+
+/* 代码样式 */
+code {
+    font-family: 'JetBrains Mono', 'SF Mono', Monaco, monospace;
+    background: #f6f8fa;
+    color: #1f2328;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 85%;
+    border: 1px solid #d8dee4;
+}
+
+pre {
+    background: #f6f8fa;
+    color: #1f2328;
+    padding: 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 16px 0;
+    border: 1px solid #d8dee4;
+    font-size: 14px;
+}
+
+pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+}
+
+/* 引用样式 */
+blockquote {
+    border-left: 4px solid #0969da;
+    background: #f6f8fa;
+    margin: 16px 0;
+    padding: 8px 16px;
+    color: #656d76;
+    border-radius: 0 6px 6px 0;
+}
+
+/* 链接样式 */
+a {
+    color: #0969da;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 强调样式 */
+strong {
+    font-weight: 600;
+    color: #1f2328;
+}
+
+em {
+    font-style: italic;
+    color: #656d76;
+}
+
+/* 分隔线 */
+hr {
+    border: none;
+    height: 1px;
+    background: #d8dee4;
+    margin: 24px 0;
+}
+
+/* 图片样式 */
+img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    margin: 2px;
+    vertical-align: middle;
+}
+
+/* 页面布局 */
+@page {
+    size: A4;
+    margin: 2cm;
+}
+
+/* 打印优化 */
+@media print {
+    body {
+        font-size: 12px;
+        padding: 20px;
+        color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    h1 {
+        font-size: 20px;
+        page-break-after: avoid;
+    }
+
+    h2, h3, h4 {
+        page-break-after: avoid;
+        page-break-inside: avoid;
+    }
+
+    table {
+        page-break-inside: avoid;
+    }
+
+    p {
+        orphans: 3;
+        widows: 3;
+    }
+}

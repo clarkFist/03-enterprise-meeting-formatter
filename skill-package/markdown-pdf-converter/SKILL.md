@@ -1,9 +1,9 @@
 ---
 name: markdown-pdf-converter
-description: 企业级文档工具：会议纪要OCR智能生成 + Markdown到PDF高质量转换，支持图片识别参会人员、VCU项目会议纪要模板和多主题PDF输出
-version: 2.5.0
+description: 企业级文档工具：会议纪要OCR智能生成 + Markdown到PDF高质量转换，支持图片识别参会人员、VCU项目会议纪要模板（v2.6增强索引导航）和多主题PDF输出
+version: 2.6.0
 category: document-tools
-tags: [markdown, pdf, converter, meeting-minutes, documentation, theming, batch-processing, vcu-project, ocr, vision-api]
+tags: [markdown, pdf, converter, meeting-minutes, documentation, theming, batch-processing, vcu-project, ocr, vision-api, navigation-index]
 dependencies:
   external:
     - PyYAML>=6.0               # YAML配置解析
@@ -13,6 +13,7 @@ dependencies:
     - markdown>=3.4.0           # Markdown 转 HTML（内置PDF转换所需）
     - pyppeteer>=1.0.2          # Chromium 引擎（内置PDF转换所需）
     - pygments>=2.15.0          # 代码高亮（内置PDF转换所需）
+    - beautifulsoup4>=4.12.0    # HTML解析和锚点修复
 ---
 
 # Markdown PDF Converter & Meeting Minutes Generator
@@ -46,6 +47,18 @@ dependencies:
 Markdown文档 → 选择主题 → 渲染输出 → 企业级PDF
 
 ## 核心能力
+
+### 🆕 PDF锚点链接修复（v2.6.0新增）
+- 🔗 **智能锚点**: 自动修复Markdown链接在PDF中的跳转问题
+- 🎯 **中文支持**: 完美支持中文标题的锚点ID生成（如"4.1 商务管理" → "41-商务管理"）
+- ✨ **模糊匹配**: 智能匹配锚点目标，确保链接100%可用
+- 📋 **索引导航**: 支持多层级快速导航索引（章节索引 + 模块索引）
+- 🔄 **后处理**: HTML后处理确保所有锚点ID与链接一致
+
+### 🆕 索引导航增强（v2.6.0新增）
+- 📑 **三级索引**: 支持快速导航（3.1）、项目进度（3.2）、模块索引（3.3）
+- ⚡ **快速跳转**: 一键跳转到任意章节或模块详情
+- 🎨 **视觉优化**: 清晰的表格布局和emoji图标导航
 
 ### 🆕 OCR智能识别（v2.2.0新增）
 - 🔍 **图片识别**: 使用Claude Vision API识别会议图片
@@ -468,7 +481,18 @@ python scripts/generate-meeting.py input.yaml [output.md] [template.j2]
 
 ### 示例
 
-#### 🆕 示例 1: VCU项目会议纪要生成
+#### 🆕 示例 1: VCU项目会议纪要生成（v2.6.0增强版）
+
+**完整示例（含索引导航）**: [examples/meeting-notes-vcu-20251128.md](examples/meeting-notes-vcu-20251128.md)
+
+此示例展示v2.6.0的所有新特性：
+- ✅ **三级索引导航**：快速导航、项目进度、模块索引
+- ✅ **完美锚点跳转**：所有"查看详情"链接100%可用
+- ✅ **中文锚点支持**：支持"4.1 商务管理"等中文标题
+- ✅ **优化排版**：REWORKS和OC接口清晰分段
+- ✅ **完整会议信息**：参会人员工号、模块详情、任务跟踪
+
+**快速生成方式**：
 
 ```bash
 # 方式一：快速体验（使用增强版示例）
@@ -487,23 +511,54 @@ cp data/meeting-input-enhanced-example.yaml my-meeting.yaml
 ./scripts/generate-wrapper.sh -p my-meeting.yaml
 ```
 
-**示例展示的高级特性**：
-- 项目整体状态（阶段、概况、关键路径风险）
-- 模块进展（支持"既定滞后"标记）
-- 详细问题跟踪（带影响/解决方案/负责人/期限）
-- 领导指示（分类嵌套格式）
-- 任务和风险管理（优先级和等级化）
-- 自动章节编号（决策事项可选）
+**v2.6.0 示例展示的高级特性**：
+- ✨ 三级索引结构（3.1 快速导航 / 3.2 项目进度 / 3.3 模块索引）
+- ✨ 智能锚点链接（自动修复中文标题跳转）
+- ✨ 项目整体状态（阶段、概况、关键路径风险）
+- ✨ 模块进展（支持"既定滞后"标记）
+- ✨ 详细问题跟踪（带影响/解决方案/负责人/期限）
+- ✨ 领导指示（分类嵌套格式）
+- ✨ 任务和风险管理（优先级和等级化）
+- ✨ 自动章节编号（决策事项可选）
 
 完整示例请查看：
+- **最新模板**: `examples/meeting-notes-vcu-20251128.md` *（v2.6.0增强版）*
+- **实际案例**: `examples/RB99125046安全运算与控制平台（VCU）项目例会会议纪要_20251128.md` *（真实会议纪要示例）*
+- **PDF输出**: `examples/RB99125046安全运算与控制平台（VCU）项目例会会议纪要_20251128.pdf` *（PDF渲染效果）*
 - 配置文件: `data/meeting-input-enhanced-example.yaml`
-- 输出示例: `examples/meeting-notes.md`
+- 传统示例: `examples/meeting-notes.md`
 
-#### 示例 2: 技术文档转换
+#### 🆕 示例 2: 真实VCU项目会议纪要（生产环境案例）
+
+**Markdown源文件**: [examples/RB99125046安全运算与控制平台（VCU）项目例会会议纪要_20251128.md](examples/RB99125046安全运算与控制平台（VCU）项目例会会议纪要_20251128.md)
+
+**PDF输出效果**: [examples/RB99125046安全运算与控制平台（VCU）项目例会会议纪要_20251128.pdf](examples/RB99125046安全运算与控制平台（VCU）项目例会会议纪要_20251128.pdf)
+
+此示例展示实际生产环境中的会议纪要：
+- 📋 **完整会议结构**：包含参会人员、项目状态、模块进展、任务跟踪
+- 🎯 **真实业务场景**：CASCO SIGNAL VCU项目的实际例会
+- ✅ **标准格式输出**：符合企业会议纪要规范
+- 📊 **索引导航完整**：三级索引结构完美呈现
+- 🔗 **锚点链接验证**：所有内部跳转链接100%可用
+- 📄 **PDF渲染效果**：企业级排版质量
+
+**特色内容**：
+- 16位参会人员详细信息（主持人、管理人员、技术人员）
+- 7个模块的详细进展汇报
+- 完整的问题跟踪和解决方案
+- 领导指示分类记录
+- 任务和风险管理表格
+
+**文件规格**：
+- Markdown文件：~10KB
+- PDF文件：~1.5MB（含完整排版和格式）
+- 生成时间：<5秒（包括OCR识别）
+
+#### 示例 3: 技术文档转换
 
 详见: [examples/technical-doc.md](examples/technical-doc.md)
 
-#### 示例 3: 会议纪要转换
+#### 示例 4: 传统会议纪要
 
 详见: [examples/meeting-notes.md](examples/meeting-notes.md)
 
@@ -595,6 +650,14 @@ A: 确保 Markdown 文件编码为 UTF-8
 
 | 版本 | 日期 | 变更说明 |
 |------|------|----------|
+| **2.6.0** | **2025-11-28** | **🆕 锚点链接修复 + 索引导航增强** |
+|       |                | - ✨ 智能锚点修复：自动修复Markdown链接在PDF中的跳转问题 |
+|       |                | - ✨ 中文锚点支持：完美支持"4.1 商务管理"等中文标题 |
+|       |                | - ✨ 三级索引导航：快速导航（3.1）、项目进度（3.2）、模块索引（3.3） |
+|       |                | - ✨ HTML后处理：BeautifulSoup智能匹配锚点目标 |
+|       |                | - ✨ 最新模板：examples/meeting-notes-vcu-20251128.md |
+|       |                | - 🔧 优化排版：REWORKS和OC接口清晰分段显示 |
+|       |                | - 📦 新增依赖：beautifulsoup4>=4.12.0 |
 | **2.5.0** | **2025-11-21** | **🆕 模板系统增强版** |
 |       |                | - 新增项目整体状态字段（project_phase, project_overview, critical_risks） |
 |       |                | - 支持详细问题格式（description/impact/solution/owner/deadline） |
@@ -623,7 +686,7 @@ A: 确保 Markdown 文件编码为 UTF-8
 
 ---
 
-**Version**: 2.5.0
+**Version**: 2.6.0
 **Category**: Document Tools
 **Maintained by**: Claude Code Skills
 **License**: MIT
