@@ -53,3 +53,12 @@ htmlcov/
 # Generated PDFs (keep examples)
 test_*.pdf
 *_test.pdf
+
+# Work summaries PDFs (generated files)
+work-summaries/**/*.pdf
+
+# Test documents
+test_*.md
+
+# Meeting PDFs in skill-package
+skill-package/**/*.pdf
